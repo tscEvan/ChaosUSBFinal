@@ -479,29 +479,49 @@ public class ScrollingActivity extends AppCompatActivity {
     public void sendChaosUs() {
         int sendUm = Float.floatToIntBits(u1);
         Log.i(log, "sendUm = " + sendUm);
-        int f1 = Integer.parseInt(strSet), f2 = Integer.parseInt(strSet), f3 = Integer.parseInt(strSet), f4 = Integer.parseInt(strSet);
-        byte us[] = new byte[4];
-        us[0] = (byte) ((sendUm & 0xff000000) >>> 24);
-        f1 = us[0];
-        us[1] = (byte) ((sendUm & 0x00ff0000) >>> 16);
-        f2 = us[1];
-        us[2] = (byte) ((sendUm & 0x0000ff00) >>> 8);
-        f3 = us[2];
-        us[3] = (byte) ((sendUm & 0x0ff));
-        f4 = us[3];
-        try {
-            OutputStream os = socket.getOutputStream();
-            os.write(f1);
-            Log.i(log, "f1 = " + us[0]);
-            os.write(f2);
-            Log.i(log, "f2 = " + us[1]);
-            os.write(f3);
-            Log.i(log, "f3 = " + us[2]);
-            os.write(f4);
-            Log.i(log, "f4 = " + us[3]);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+//        int f1 = Integer.parseInt(strSet), f2 = Integer.parseInt(strSet), f3 = Integer.parseInt(strSet), f4 = Integer.parseInt(strSet);
+        byte us[] = new byte[11];
+//        us[0] = (byte) ((sendUm & 0xff000000) >>> 24);
+//        f1 = us[0];
+//        us[1] = (byte) ((sendUm & 0x00ff0000) >>> 16);
+//        f2 = us[1];
+//        us[2] = (byte) ((sendUm & 0x0000ff00) >>> 8);
+//        f3 = us[2];
+//        us[3] = (byte) ((sendUm & 0x0ff));
+//        f4 = us[3];
+//        try {
+//            OutputStream os = socket.getOutputStream();
+//            os.write(f1);
+//            Log.i(log, "f1 = " + us[0]);
+//            os.write(f2);
+//            Log.i(log, "f2 = " + us[1]);
+//            os.write(f3);
+//            Log.i(log, "f3 = " + us[2]);
+//            os.write(f4);
+//            Log.i(log, "f4 = " + us[3]);
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+        us[0] = (byte) ((sendUm & 0xe0000000) >>> 29);
+        us[1] = (byte) ((sendUm & 0x1c000000) >>> 26);
+        us[2] = (byte) ((sendUm & 0x3800000) >>> 23);
+        us[3] = (byte) ((sendUm & 0x700000) >>> 20);
+        us[4] = (byte) ((sendUm & 0xe0000) >>> 17);
+        us[5] = (byte) ((sendUm & 0x1c000) >>> 14);
+        us[6] = (byte) ((sendUm & 0x3800) >>> 11);
+        us[7] = (byte) ((sendUm & 0x700) >>> 8);
+        us[8] = (byte) ((sendUm & 0xe0) >>> 5);
+        us[9] = (byte) ((sendUm & 0x1c) >>> 2);
+        us[10] = (byte) ((sendUm & 0x3));
+        for (int i = 0; i < 11; i++) {
+            try {
+                OutputStream os = socket.getOutputStream();
+                os.write(us[i]);
+                Log.i(log, "us"+i+1+" = " + us[i]);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -745,12 +765,19 @@ public class ScrollingActivity extends AppCompatActivity {
         float makeChaosKey = (1 + (x1s * x1s)) * USBKey;
         Log.i(log, "chaosKey = " + makeChaosKey);
         int chaosKey = Float.floatToIntBits(makeChaosKey);
-        byte key[] = new byte[4];
-        key[0] = (byte) ((chaosKey & 0xff000000) >>> 24);
-        key[1] = (byte) ((chaosKey & 0x00ff0000) >>> 16);
-        key[2] = (byte) ((chaosKey & 0x0000ff00) >>> 8);
-        key[3] = (byte) ((chaosKey & 0x000000ff));
-        for (int i = 0; i < 4; i++) {
+        byte key[] = new byte[11];
+        key[0] = (byte) ((chaosKey & 0xe0000000) >>> 29);
+        key[1] = (byte) ((chaosKey & 0x1c000000) >>> 26);
+        key[2] = (byte) ((chaosKey & 0x3800000) >>> 23);
+        key[3] = (byte) ((chaosKey & 0x700000) >>> 20);
+        key[4] = (byte) ((chaosKey & 0xe0000) >>> 17);
+        key[5] = (byte) ((chaosKey & 0x1c000) >>> 14);
+        key[6] = (byte) ((chaosKey & 0x3800) >>> 11);
+        key[7] = (byte) ((chaosKey & 0x700) >>> 8);
+        key[8] = (byte) ((chaosKey & 0xe0) >>> 5);
+        key[9] = (byte) ((chaosKey & 0x1c) >>> 2);
+        key[10] = (byte) ((chaosKey & 0x3));
+        for (int i = 0; i < 11; i++) {
             try {
                 OutputStream os = socket.getOutputStream();
                 os.write(key[i]);
